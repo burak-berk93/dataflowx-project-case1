@@ -69,7 +69,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       <ListItemIcon sx={{ color: 'white' }}>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Diyagram" />
+      <ListItemText primary="Diagram" />
     </StyledListItem>
   </Link>
 
