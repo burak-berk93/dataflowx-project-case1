@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useTeamContext } from '../context/TeamContext';
 import { Team, User } from '../types/TeamTypes'; // Team ve User tiplerini import ediyoruz
 

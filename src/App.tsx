@@ -1,4 +1,3 @@
-import React from 'react';
 import AppRouter from './router/index';
 import { ThemeProvider } from '@mui/material/styles';
 import { TeamProvider } from './context/TeamContext';

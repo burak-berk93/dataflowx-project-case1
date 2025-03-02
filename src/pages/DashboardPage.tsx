@@ -1,5 +1,4 @@
 // src/pages/OrdersPage.tsx
-import React from 'react';
 import DashboardLayout from '../layouts/DashboardLayout';
 import Dashboard from '../components/Dashboard';
 

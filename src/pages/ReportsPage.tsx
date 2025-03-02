@@ -1,5 +1,4 @@
 // src/pages/ReportsPage.tsx
-import React from 'react';
 import DashboardLayout from '../layouts/DashboardLayout';
 import Reports from '../components/Reports';
 

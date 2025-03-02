@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import ReactFlow, { MiniMap, Controls, Background, Node, Edge, NodeDragHandler } from 'reactflow';
 import { useTeamContext } from '../context/TeamContext';
 import 'reactflow/dist/style.css';
