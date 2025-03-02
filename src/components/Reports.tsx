@@ -5,12 +5,13 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Pie, Bar } from "react-chartjs-2";
 import { Chart, ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from "chart.js";
 
+
 Chart.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
 const ReportPage: React.FC = () => {
   const { teams } = useTeamContext();
 
-  // Prepare data for the pie chart
+
   const chartDataPie = {
     labels: teams.map((team) => team.name),
     datasets: [
@@ -21,7 +22,7 @@ const ReportPage: React.FC = () => {
     ],
   };
 
-  // Prepare data for the bar chart
+
   const chartDataBar = {
     labels: teams.map((team) => team.name),
     datasets: [
@@ -33,16 +34,16 @@ const ReportPage: React.FC = () => {
     ],
   };
 
-  // Define columns for the user table
+ 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 100 },
+
     { field: "name", headerName: "Name", width: 150 },
     { field: "email", headerName: "Email", width: 200 },
     { field: "phone", headerName: "Phone", width: 150 },
     { field: "team", headerName: "Team", width: 150 },
   ];
 
-  // Map users to table rows
+
   const rows = teams.flatMap((team) =>
     team.users.map((user) => ({
       id: user.id,
@@ -54,15 +55,15 @@ const ReportPage: React.FC = () => {
   );
 
   return (
-    <Container>
+    <Container sx={{ mt: 4, mr:50}}>
       <Typography variant="h4" gutterBottom color="primary">
-        📊 Team Report
+        Team Report
       </Typography>
 
       {/* Team Cards */}
       <Grid container spacing={2}>
         {teams.map((team) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={team.id}>
+          <Grid item xs={6} sm={6} md={4} lg={3} key={team.id}>
             <Card sx={{ boxShadow: 3, borderRadius: 2, minHeight: 150 }}>
               <CardContent>
                 <Typography variant="h6" gutterBottom>
@@ -86,7 +87,9 @@ const ReportPage: React.FC = () => {
           <Box sx={{ height: { xs: 300, sm: 400 } }}>
             <Pie data={chartDataPie} options={{ responsive: true, plugins: { legend: { position: "top" } } }} />
           </Box>
+          
         </Card>
+        
       </Box>
 
       {/* Bar Chart */}

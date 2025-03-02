@@ -11,28 +11,28 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import ListItemIcon from '@mui/material/ListItemIcon';
 
-// Props interface
+
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
-// Styled components
+
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main, // Modern arka plan rengi
-  boxShadow: 'none', // Shadow kaldırıldı
+  backgroundColor: theme.palette.primary.main, 
+  boxShadow: 'none', 
 }));
 
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
   '& .MuiDrawer-paper': {
     boxSizing: 'border-box',
-    backgroundColor: theme.palette.secondary.main, // Hafif koyu bir renk
-    borderRight: `2px solid ${theme.palette.divider}`, // Sağ kenara ince bir çizgi
+    backgroundColor: theme.palette.secondary.main, 
+    borderRight: `2px solid ${theme.palette.divider}`,
   },
 }));
 
 
 
-// DashboardLayout component
+
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -99,7 +99,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             src={logodata}
             alt="Logo"
             sx={{
-              height: { xs: 30, sm: 35, md: 40 }, // Mobilde küçülüyor
+              height: { xs: 30, sm: 35, md: 40 }, 
               marginRight: 2,
               display: 'flex',
               alignItems: 'center',
@@ -115,12 +115,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         anchor="left"
         open={isMobile ? mobileOpen : true}
         onClose={handleDrawerToggle}
-        ModalProps={{ keepMounted: true }} // Daha iyi açılma performansı
+        ModalProps={{ keepMounted: true }} 
         sx={{
           '& .MuiDrawer-paper': {
-            top: isMobile ? 0 : 64, // AppBar'ın altından hizalandı
-            height: isMobile ? '100%' : 'calc(100% - 64px)', // Drawer yüksekliği
-            width: isMobile ? 280 : 240, // Menü genişliği artırıldı
+            top: isMobile ? 0 : 64, 
+            height: isMobile ? '100%' : 'calc(100% - 64px)', 
+            width: isMobile ? 280 : 240, 
           }
         }}
       >
@@ -134,8 +134,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           flexGrow: 1,
           bgcolor: 'background.default',
           padding: 5,
-          marginLeft: isMobile ? 0 : 25, // Masaüstünde menünün genişliği kadar kaydır
-          transition: 'margin 0.3s ease-in-out', // Geçiş efekti eklendi
+          marginLeft: isMobile ? 0 : 25, 
+          transition: 'margin 0.3s ease-in-out', 
         }}
       >
         {children}

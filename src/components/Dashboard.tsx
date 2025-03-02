@@ -1,6 +1,6 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTeamContext } from '../context/TeamContext';
-import { Team, User } from '../types/TeamTypes'; // Team ve User tiplerini import ediyoruz
+import { Team, User } from '../types/TeamTypes';
 
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 
 const Dashboard: React.FC = () => {
-  const { teams, addTeam, addUserToTeam } = useTeamContext(); // Context'ten alınan fonksiyonlar
+  const { teams, addTeam, addUserToTeam } = useTeamContext();
   const [teamName, setTeamName] = useState<string>('');
   const [userName, setUserName] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
@@ -19,8 +19,10 @@ const Dashboard: React.FC = () => {
   const [userDescription, setUserDescription] = useState<string>('');
   const [selectedTeam, setSelectedTeam] = useState<number | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  // Snackbar için state
+
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "warning">("success");
+
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const [errors, setErrors] = useState({
@@ -35,7 +37,7 @@ const Dashboard: React.FC = () => {
       setImagePreview(objectUrl);
 
       return () => {
-        URL.revokeObjectURL(objectUrl); // Bellek sızıntısını önler
+        URL.revokeObjectURL(objectUrl);
       };
     }
   }, [userImages]);
@@ -52,7 +54,7 @@ const Dashboard: React.FC = () => {
           <Typography variant="h6" gutterBottom>
             Create Team
           </Typography>
-          <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+          <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
             <TextField
               label="Team Name"
               variant="outlined"
@@ -63,14 +65,28 @@ const Dashboard: React.FC = () => {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => { addTeam(teamName); setTeamName(''); }}
-              sx={{ minWidth: 180, p: 1 }} // Butonu genişlettik ve padding ekledik
+              onClick={() => {
+                if (!teamName.trim()) {
+                  setSnackbarMessage("Team name cannot be empty!");
+                  setSnackbarSeverity("warning");
+                  setSnackbarOpen(true);
+                  return;
+                }
+
+                addTeam(teamName);
+                setTeamName("");
+                setSnackbarMessage("Team successfully added!");
+                setSnackbarSeverity("success");
+                setSnackbarOpen(true);
+              }}
+              sx={{ minWidth: 180, p: 1 }}
             >
               Add Team
             </Button>
           </Box>
         </CardContent>
       </Card>
+
 
 
       {/* Add User to Team Section */}
@@ -128,10 +144,13 @@ const Dashboard: React.FC = () => {
                 label="Phone No"
                 variant="outlined"
                 value={userPhone}
-                error={errors.userPhone || !/^\+?\d{10,15}$/.test(userPhone)}
+              
+                error={userPhone ? !/^\+?\d{10,15}$/.test(userPhone) : false}
+
+
                 onChange={(e) => {
                   const input = e.target.value;
-                  if (/^\+?\d*$/.test(input)) { // Sadece rakam veya başında + olan değerleri kabul et
+                  if (/^\+?\d*$/.test(input)) {
                     setUserPhone(input);
                   }
                 }}
@@ -143,8 +162,8 @@ const Dashboard: React.FC = () => {
                       : ""
                 }
                 fullWidth
-                type="tel" // Telefon giriş tipi
-                slotProps={{ input: { inputMode: "tel" } }} // Mobil cihazlar için telefon klavyesini açar
+                type="tel"
+                slotProps={{ input: { inputMode: "tel" } }}
               />
 
 
@@ -167,11 +186,12 @@ const Dashboard: React.FC = () => {
 
                 {/* Dosya Yükleme Butonu */}
                 <Button
+                  sx={{ minWidth: 180, p: 1 }}
                   variant="contained"
                   component="label"
                   startIcon={<CloudUploadIcon />}
                 >
-                  Fotoğraf Yükle
+                  Upload Image
                   <input
                     hidden
                     accept="image/*"
@@ -180,7 +200,7 @@ const Dashboard: React.FC = () => {
                       if (e.target.files && e.target.files[0]) {
                         const file = e.target.files[0];
 
-                        // Sadece resim dosyalarını kabul et
+
                         if (!file.type.startsWith("image/")) {
                           alert("Lütfen bir resim dosyası seçin!");
                           return;
@@ -202,13 +222,17 @@ const Dashboard: React.FC = () => {
             </Grid>
             <Grid item xs={12}>
               <Button
+                sx={{ minWidth: 180, p: 1 }}
                 variant="contained"
                 color="secondary"
                 onClick={() => {
                   const newErrors = {
                     userName: !userName.trim(),
-                    userEmail: !userEmail.trim(),
+
+                    userEmail: !userEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail),
+
                     userPhone: !userPhone.trim() || !/^\+?\d{10,15}$/.test(userPhone),
+
                     selectedTeam: selectedTeam === null,
                   };
 
@@ -216,11 +240,12 @@ const Dashboard: React.FC = () => {
 
                   if (Object.values(newErrors).some((error) => error)) {
                     setSnackbarMessage("Please fill in all required fields correctly!");
+                    setSnackbarSeverity("warning");
                     setSnackbarOpen(true);
                     return;
                   }
 
-                  // Eğer tüm alanlar doluysa kullanıcıyı ekle
+
                   addUserToTeam(
                     selectedTeam!,
                     userName,
@@ -231,7 +256,12 @@ const Dashboard: React.FC = () => {
                     userDescription
                   );
 
-                  // State'leri sıfırla
+
+                  setSnackbarMessage("User successfully added!");
+                  setSnackbarSeverity("success");
+                  setSnackbarOpen(true);
+
+
                   setUserName("");
                   setUserEmail("");
                   setUserPhone("");
@@ -246,13 +276,10 @@ const Dashboard: React.FC = () => {
               </Button>
 
               {/* Snackbar Bileşeni */}
-              <Snackbar
-                open={snackbarOpen}
-                autoHideDuration={3000}
-                onClose={() => setSnackbarOpen(false)}
-                anchorOrigin={{ vertical: "top", horizontal: "center" }}
-              >
-                <Alert onClose={() => setSnackbarOpen(false)} severity="error" sx={{ width: "100%" }}>
+
+
+              <Snackbar open={snackbarOpen} autoHideDuration={3000} anchorOrigin={{ vertical: "top", horizontal: "center" }} onClose={() => setSnackbarOpen(false)}>
+                <Alert onClose={() => setSnackbarOpen(false)} severity={snackbarSeverity} sx={{ width: "100%" }}>
                   {snackbarMessage}
                 </Alert>
               </Snackbar>
@@ -266,57 +293,57 @@ const Dashboard: React.FC = () => {
         Teams
       </Typography>
       <Grid container spacing={3}>
-      {teams.map((team: Team) => (
-        <Grid item xs={12} sm={6} md={4} key={team.id}>
-          <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <CardContent sx={{ flex: 1 }}>
-              <Typography variant="h6" gutterBottom>
-                {team.name}
-              </Typography>
+        {teams.map((team: Team) => (
+          <Grid item xs={12} sm={6} md={4} key={team.id}>
+            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+              <CardContent sx={{ flex: 1 }}>
+                <Typography variant="h6" gutterBottom>
+                  {team.name}
+                </Typography>
 
-              <ul>
-                {team.users.map((user: User) => (
-                  <li key={user.id}>
-                    <Card sx={{ display: 'flex', flexDirection: 'column', marginBottom: 2 }}>
-                      {/* Resim */}
-                      {user.images && (
-                        <CardMedia
-                          component="img"
-                          height="140"
-                          image={URL.createObjectURL(user.images)}
-                          alt={user.name}
-                          sx={{ objectFit: 'cover', borderRadius: '8px' }}
-                        />
-                      )}
-
-                      <CardContent>
-                        <Typography variant="body1" gutterBottom>
-                          {user.name}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          Email: {user.email || 'N/A'}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          Phone: {user.phone || 'N/A'}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          Created At: {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
-                        </Typography>
-                        {user.Description && (
-                          <Typography variant="body2" color="text.secondary">
-                            Description: {user.Description}
-                          </Typography>
+                <ul>
+                  {team.users.map((user: User) => (
+                    <li key={user.id}>
+                      <Card sx={{ display: 'flex', flexDirection: 'column', marginBottom: 2 }}>
+                        {/* Resim */}
+                        {user.images && (
+                          <CardMedia
+                            component="img"
+                            height="140"
+                            image={URL.createObjectURL(user.images)}
+                            alt={user.name}
+                            sx={{ objectFit: 'cover', borderRadius: '8px' }}
+                          />
                         )}
-                      </CardContent>
-                    </Card>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-        </Grid>
-      ))}
-    </Grid>
+
+                        <CardContent>
+                          <Typography variant="body1" gutterBottom>
+                            {user.name}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            Email: {user.email || 'N/A'}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            Phone: {user.phone || 'N/A'}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            Created At: {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
+                          </Typography>
+                          {user.Description && (
+                            <Typography variant="body2" color="text.secondary">
+                              Description: {user.Description}
+                            </Typography>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
     </Box>
   );
 };

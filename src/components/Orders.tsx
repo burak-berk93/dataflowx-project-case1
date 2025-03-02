@@ -12,7 +12,7 @@ const Orders: React.FC = () => {
   const [edges, setEdges] = useState<Edge[]>([]);
   const [hiddenTeams, setHiddenTeams] = useState<Set<string>>(new Set());
 
-  // Düğümler sürüklendiğinde pozisyonları güncelle
+
   const onNodeDragStop: NodeDragHandler = (_, node) => {
     setNodes((prevNodes) =>
       prevNodes.map((n) =>
@@ -21,15 +21,15 @@ const Orders: React.FC = () => {
     );
   };
 
-  // Sağ tıklama ile kullanıcıları göster/gizle
+
   const onNodeContextMenu = (event: React.MouseEvent, node: Node) => {
     event.preventDefault();
     const teamId = node.id;
-    console.log("Right-clicked node ID:", node.id); // ID'yi konsola yazdır
+    console.log("Right-clicked node ID:", node.id); 
 
     if (node.id.startsWith("user-")) {
-      const userId = node.id.replace("user-", ""); // "user-" kısmını kaldır
-      removeUserFromTeam(userId); // Kullanıcıyı sil
+      const userId = node.id.replace("user-", "");
+      removeUserFromTeam(userId); 
     }
     setHiddenTeams((prevHiddenTeams) => {
       const updatedHiddenTeams = new Set(prevHiddenTeams);
@@ -48,12 +48,12 @@ const Orders: React.FC = () => {
     const newNodes: Node[] = [];
     const newEdges: Edge[] = [];
 
-    let currentYOffset = 100; // İlk takımın başlangıç yüksekliği
+    let currentYOffset = 100; 
 
     teams.forEach((team, index) => {
       const teamId = `team-${team.id}`;
 
-      // Takım düğümü
+ 
       newNodes.push({
         id: teamId,
         data: { label: team.name, createdAt: team.createdAt },
@@ -68,13 +68,13 @@ const Orders: React.FC = () => {
         },
       });
 
-      let teamYOffset = currentYOffset + 120; // Kullanıcı düğümlerinin başlangıç Y değeri
+      let teamYOffset = currentYOffset + 120;
 
       if (!hiddenTeams.has(teamId)) {
         team.users.forEach((user) => {
           const userId = `user-${user.id}`;
 
-          // Kullanıcı düğümü
+       
           newNodes.push({
             id: userId,
             data: {
@@ -92,7 +92,7 @@ const Orders: React.FC = () => {
             },
           });
 
-          // Takımdan kullanıcıya bağlantı (edge)
+         
           newEdges.push({
             id: `edge-${team.id}-${user.id}`,
             source: teamId,
@@ -102,11 +102,11 @@ const Orders: React.FC = () => {
             style: { stroke: '#ff0077', strokeWidth: 2 },
           });
 
-          teamYOffset += 50; // Bir sonraki kullanıcı için Y konumunu artır
+          teamYOffset += 50; 
         });
       }
 
-      currentYOffset = 100; // Son kullanıcının altına boşluk bırak
+      currentYOffset = 100; 
     });
 
     setNodes(newNodes);

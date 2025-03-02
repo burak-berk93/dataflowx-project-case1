@@ -1,9 +1,9 @@
 export type User = {
-    id: string; // UUID ile benzersiz ID
+    id: string; 
     name: string;
     email: string | null;
     phone: string | null;
-    images: File | null;  // Burada File türünü kullanıyoruz
+    images: File | null;  
     createdAt: Date | null;
     Description?: string;
   };
@@ -11,7 +11,7 @@ export type User = {
   export type Team = {
     id: number;
     name: string;
-    createdAt: Date | null;  // Burada createdAt özelliğini ekliyoruz
+    createdAt: Date | null;  
 
     users: User[];
   };

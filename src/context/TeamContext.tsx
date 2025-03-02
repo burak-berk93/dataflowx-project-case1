@@ -1,6 +1,6 @@
 import  { createContext, useState, ReactNode, useContext } from 'react';
-import { Team, TeamContextType, User } from '../types/TeamTypes'; // Tipleri içe aktardık
-import { v4 as uuidv4 } from 'uuid'; // UUID kullanımı
+import { Team, TeamContextType, User } from '../types/TeamTypes'; 
+import { v4 as uuidv4 } from 'uuid'; 
 
 const TeamContext = createContext<TeamContextType | undefined>(undefined);
 
@@ -23,7 +23,7 @@ export const TeamProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setTeams((prevTeams) =>
       prevTeams.map((team) => ({
         ...team,
-        users: team.users.filter((user) => user.id !== userId), // Kullanıcıyı çıkar
+        users: team.users.filter((user) => user.id !== userId), 
       }))
     );
   };
@@ -41,9 +41,9 @@ export const TeamProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 name: userName,
                 email,
                 phone,
-                images: image,  // Burada image, File | null türünde olacak
+                images: image,  
                 createdAt: new Date(),
-              } as User,  // User tipine uyumlu
+              } as User, 
             ],
           };
         }
