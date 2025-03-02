@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
-import { AppBar, Drawer, List, ListItem, ListItemText, Toolbar, Typography, IconButton } from '@mui/material';
+import { AppBar, Drawer, List, ListItem, ListItemText, Toolbar, IconButton } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/system';
 import MenuIcon from '@mui/icons-material/Menu';

@@ -107,7 +107,7 @@ const ReportPage: React.FC = () => {
           <Typography variant="h6" gutterBottom>
             User List
           </Typography>
-          <DataGrid rows={rows} columns={columns} pageSize={5} autoHeight />
+          <DataGrid rows={rows} columns={columns} />
         </Card>
       </Box>
     </Container>
