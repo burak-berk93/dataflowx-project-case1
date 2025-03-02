@@ -30,12 +30,7 @@ const StyledDrawer = styled(Drawer)(({ theme }) => ({
   },
 }));
 
-const StyledListItem = styled(ListItem)(({ theme }) => ({
-  '&:hover': {
-    backgroundColor: theme.palette.action.hover, // Hover rengi
-    borderRadius: theme.shape.borderRadius, // Yuvarlatılmış köşeler
-  },
-}));
+
 
 // DashboardLayout component
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
@@ -46,14 +41,17 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-  const StyledListItem = styled(ListItem)(({ theme }) => ({
-    color: 'white', // Yazı rengi beyaz
+
+  const StyledListItem = styled(ListItem)<{ button?: boolean }>(({ theme }) => ({
+    color: 'white', 
     '&:hover': {
-      backgroundColor: theme.palette.primary.dark, // Daha koyu bir hover rengi
-      transform: 'scale(1.05)', // Hafif büyüme efekti
-      transition: 'all 0.3s ease', // Geçiş efekti
+      backgroundColor: theme.palette.primary.dark,
+      transform: 'scale(1.05)',
+      transition: 'all 0.3s ease',
     },
   }));
+
+ 
 
   const drawerContent = (
 <List>
